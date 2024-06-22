@@ -3,9 +3,29 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Empty.png" />
+    <None Remove="Assets\Food.png" />
+    <None Remove="Assets\Logo.ico" />
+    <None Remove="Assets\SnakeBody.png" />
+    <None Remove="Assets\SnakeBodyDead.png" />
+    <None Remove="Assets\SnakeHead.png" />
+    <None Remove="Assets\SnakeHeadDead.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Empty.png" />
+    <Resource Include="Assets\Food.png" />
+    <Resource Include="Assets\Logo.ico" />
+    <Resource Include="Assets\SnakeBody.png" />
+    <Resource Include="Assets\SnakeBodyDead.png" />
+    <Resource Include="Assets\SnakeHead.png" />
+    <Resource Include="Assets\SnakeHeadDead.png" />
+  </ItemGroup>
 
 </Project>
