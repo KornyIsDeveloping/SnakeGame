@@ -16,6 +16,14 @@ namespace SnakeGame
     /// </summary>
     public partial class MainWindow : Window
     {
+        //mapping grid values to image sources
+        private readonly Dictionary<GridValue, ImageSource> gridValToImage = new()
+        {
+            { GridValue.Empty, Image.Empty },
+            { GridValue.Snake, Image.Body },
+            { GridValue.Food, Image.Food }
+        };
+
         private readonly int rows = 15, cols = 15;
         private readonly Image[,] gridImages;
 
