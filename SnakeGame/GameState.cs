@@ -30,6 +30,7 @@ namespace SnakeGame
             Dir = DirectionGrid.Right;
 
             AddSnake();
+            AddFood();
         }
 
         private void AddSnake()
@@ -50,9 +51,68 @@ namespace SnakeGame
             {
                 for(int c=0; c < Columns; c++)
                 {
-                    yield return new PositionGrid(r, c);
+                    if (Grid[r, c] == GridValue.Empty)
+                    {
+                        yield return new PositionGrid(r, c);
+                    }
                 }
             }
+        }
+
+        private void AddFood()
+        {
+            List<PositionGrid> empty = new List<PositionGrid>(EmptyPositions());
+
+            if (empty.Count == 0)
+            {
+                return;
+            }
+
+            PositionGrid pos = empty[random.Next(empty.Count)];
+            Grid[pos.Row, pos.Col] = GridValue.Food;
+        }
+
+        public PositionGrid HeadPosition()
+        {
+            return snakePositions.First.Value;
+        }
+
+        public PositionGrid TailPosition()
+        {
+            return snakePositions.Last.Value;
+        }
+
+        public IEnumerable<PositionGrid> SnakePositions()
+        {
+            return snakePositions;
+        }
+
+        private void AddHead(PositionGrid pos)
+        {
+            snakePositions.AddFirst(pos);
+            Grid[pos.Row, pos.Col] = GridValue.Snake;
+        }
+
+        private void RemoveTail()
+        {
+            PositionGrid tail = snakePositions.Last.Value;
+            Grid[tail.Row, tail.Col] = GridValue.Empty;
+            snakePositions.RemoveLast();
+        }
+
+        public void ChngeDirection(DirectionGrid dir)
+        {
+            Dir = dir;
+        }
+
+        private bool OutsideGrid(PositionGrid pos)
+        {
+            return pos.Row < 0 || pos.Row >= Rows || pos.Col < 0 || pos.Col >= Columns;
+        }
+
+        private GridValue WillHit(PositionGrid newHeadPos)
+        {
+            return Grid[newHeadPos.Row, newHeadPos.Col];
         }
     }
 }
