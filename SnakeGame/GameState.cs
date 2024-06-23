@@ -100,7 +100,7 @@ namespace SnakeGame
             snakePositions.RemoveLast();
         }
 
-        public void ChngeDirection(DirectionGrid dir)
+        public void ChangeDirection(DirectionGrid dir)
         {
             Dir = dir;
         }
@@ -112,7 +112,39 @@ namespace SnakeGame
 
         private GridValue WillHit(PositionGrid newHeadPos)
         {
+            if(OutsideGrid(newHeadPos))
+            {
+                return GridValue.Outside;
+            }
+
+            if(newHeadPos == TailPosition())
+            {
+                return GridValue.Empty;
+            }
+
             return Grid[newHeadPos.Row, newHeadPos.Col];
+        }
+
+        public void Move()
+        {
+            PositionGrid newHeadPos = HeadPosition().Translate(Dir);
+            GridValue hit = WillHit(newHeadPos);
+
+            if(hit != GridValue.Outside || hit == GridValue.Snake)
+            {
+                GameOver = true;
+            }
+            else if(hit == GridValue.Empty)
+            {
+                RemoveTail();
+                AddHead(newHeadPos);
+            }
+            else if (hit == GridValue.Food)
+            {
+                AddHead(newHeadPos);
+                Score++;
+                AddFood();
+            }
         }
     }
 }

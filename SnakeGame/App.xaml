@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:SnakeGame"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="BackgroundColor">#2e2e2e</SolidColorBrush>
+        <SolidColorBrush x:Key="GridBackgroundColor">#312C40</SolidColorBrush>
+        <SolidColorBrush x:Key="GridLineColor">#2a2626</SolidColorBrush>
+        <SolidColorBrush x:Key="TextColor">#f5fcef</SolidColorBrush>
+        <SolidColorBrush x:Key="OverlayColor">#7f000000</SolidColorBrush>
+        <FontFamily x:Key="MainFont">Assets/#Minecraft</FontFamily>
     </Application.Resources>
 </Application>
