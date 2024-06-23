@@ -42,5 +42,17 @@ namespace SnakeGame
                 snakePositions.AddFirst(new PositionGrid(r, c));
             }
         }
+
+        //method that returns all empty positions for food
+        private IEnumerable<PositionGrid> EmptyPositions()
+        {
+            for(int r = 0; r < Rows; r++)
+            {
+                for(int c=0; c < Columns; c++)
+                {
+                    yield return new PositionGrid(r, c);
+                }
+            }
+        }
     }
 }
