@@ -1,16 +1,10 @@
 ﻿
 namespace SnakeGame
 {
-    public class PositionGrid
+    public class PositionGrid(int Row, int Col)
     {
-        public int Row { get; }
-        public int Col {  get; }
-
-        public PositionGrid(int Row, int Col)
-        {
-            this.Row = Row;
-            this.Col = Col;
-        }
+        public int Row { get; } = Row;
+        public int Col { get; } = Col;
 
         public PositionGrid Translate(DirectionGrid dir)
         {

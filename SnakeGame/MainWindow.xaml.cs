@@ -31,8 +31,8 @@ namespace SnakeGame
         public MainWindow()
         {
             InitializeComponent();
-            gridImages = SetUpGrid();
-            gameState = new GameState(rows, cols);
+            this.gridImages = SetUpGrid();
+            this.gameState = new GameState(rows, cols);
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -88,7 +88,7 @@ namespace SnakeGame
             {
                 for(int c = 0; c < cols; c++)
                 {
-                    Image image = new Image
+                    Image image = new()
                     {
                         Source = Images.Empty
                     };

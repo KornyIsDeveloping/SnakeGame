@@ -24,10 +24,10 @@ namespace SnakeGame
 
         public GameState(int rows, int cols) 
         { 
-            Rows = rows;
-            Columns = cols;
-            Grid = new GridValue[rows, cols];
-            Dir = DirectionGrid.Right;
+            this.Rows = rows;
+            this.Columns = cols;
+            this.Grid = new GridValue[rows, cols];
+            this.Dir = DirectionGrid.Right;
 
             AddSnake();
             AddFood();
@@ -102,7 +102,7 @@ namespace SnakeGame
 
         public void ChangeDirection(DirectionGrid dir)
         {
-            Dir = dir;
+            this.Dir = dir;
         }
 
         private bool OutsideGrid(PositionGrid pos)
@@ -130,9 +130,9 @@ namespace SnakeGame
             PositionGrid newHeadPos = HeadPosition().Translate(Dir);
             GridValue hit = WillHit(newHeadPos);
 
-            if(hit != GridValue.Outside || hit == GridValue.Snake)
+            if(hit == GridValue.Outside || hit == GridValue.Snake)
             {
-                GameOver = true;
+                this.GameOver = true;
             }
             else if(hit == GridValue.Empty)
             {
