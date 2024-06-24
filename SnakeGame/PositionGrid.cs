@@ -8,8 +8,8 @@ namespace SnakeGame
 
         public PositionGrid(int Row, int Col)
         {
-            Row = Row;
-            Col = Col;
+            this.Row = Row;
+            this.Col = Col;
         }
 
         public PositionGrid Translate(DirectionGrid dir)

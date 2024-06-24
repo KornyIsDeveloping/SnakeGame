@@ -18,9 +18,9 @@ namespace SnakeGame
         public bool GameOver { get; private set; }
 
         //list with positions currently occupied by the snake
-        private readonly LinkedList<PositionGrid> snakePositions = new LinkedList<PositionGrid>();
+        private readonly LinkedList<PositionGrid> snakePositions = new();
         //where the food should spawn
-        private readonly Random random = new Random();
+        private readonly Random random = new();
 
         public GameState(int rows, int cols) 
         { 

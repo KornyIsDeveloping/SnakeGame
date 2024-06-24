@@ -19,18 +19,63 @@ namespace SnakeGame
         //mapping grid values to image sources
         private readonly Dictionary<GridValue, ImageSource> gridValToImage = new()
         {
-            { GridValue.Empty, Image.Empty },
-            { GridValue.Snake, Image.Body },
-            { GridValue.Food, Image.Food }
+            { GridValue.Empty, Images.Empty },
+            { GridValue.Snake, Images.Body },
+            { GridValue.Food, Images.Food }
         };
 
         private readonly int rows = 15, cols = 15;
         private readonly Image[,] gridImages;
+        private readonly GameState gameState;
 
         public MainWindow()
         {
             InitializeComponent();
             gridImages = SetUpGrid();
+            gameState = new GameState(rows, cols);
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Draw();
+            await GameLoop();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(gameState.GameOver)
+            {
+                return;
+            }
+
+            switch(e.Key)
+            {
+                case Key.Up:
+                    gameState.ChangeDirection(DirectionGrid.Up);
+                    break;
+
+                case Key.Right:
+                    gameState.ChangeDirection(DirectionGrid.Right);
+                    break;
+
+                case Key.Down:
+                    gameState.ChangeDirection(DirectionGrid.Down);
+                    break;
+
+                case Key.Left:
+                    gameState.ChangeDirection(DirectionGrid.Left);
+                    break;
+            }
+        }
+
+        private async Task GameLoop()
+        {
+            while(!gameState.GameOver)
+            {
+                await Task.Delay(100);
+                gameState.Move();
+                Draw();
+            }
         }
 
         private Image[,] SetUpGrid()
@@ -54,6 +99,23 @@ namespace SnakeGame
             }
 
             return images;
+        }
+
+        private void Draw()
+        {
+            DrawGrid();
+        }
+
+        private void DrawGrid()
+        {
+            for(int r = 0; r < rows; r++)
+            {
+                for(int c = 0; c < cols ; c++)
+                {
+                    GridValue gridVal = gameState.Grid[r, c];
+                    gridImages[r, c].Source = gridValToImage[gridVal];
+                }
+            }
         }
     }
 }
