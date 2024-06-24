@@ -27,6 +27,7 @@ namespace SnakeGame
         private readonly int rows = 15, cols = 15;
         private readonly Image[,] gridImages;
         private readonly GameState gameState;
+        private readonly object directionLock = new object();
 
         public MainWindow()
         {
@@ -48,23 +49,26 @@ namespace SnakeGame
                 return;
             }
 
-            switch(e.Key)
+            lock (directionLock)
             {
-                case Key.Up:
-                    gameState.ChangeDirection(DirectionGrid.Up);
-                    break;
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        gameState.ChangeDirection(DirectionGrid.Up);
+                        break;
 
-                case Key.Right:
-                    gameState.ChangeDirection(DirectionGrid.Right);
-                    break;
+                    case Key.Right:
+                        gameState.ChangeDirection(DirectionGrid.Right);
+                        break;
 
-                case Key.Down:
-                    gameState.ChangeDirection(DirectionGrid.Down);
-                    break;
+                    case Key.Down:
+                        gameState.ChangeDirection(DirectionGrid.Down);
+                        break;
 
-                case Key.Left:
-                    gameState.ChangeDirection(DirectionGrid.Left);
-                    break;
+                    case Key.Left:
+                        gameState.ChangeDirection(DirectionGrid.Left);
+                        break;
+                }
             }
         }
 
@@ -73,7 +77,10 @@ namespace SnakeGame
             while(!gameState.GameOver)
             {
                 await Task.Delay(100);
-                gameState.Move();
+                lock (directionLock)
+                {
+                    gameState.Move();
+                }
                 Draw();
             }
         }
@@ -103,7 +110,10 @@ namespace SnakeGame
 
         private void Draw()
         {
-            DrawGrid();
+            Dispatcher.Invoke(() =>
+            {
+                DrawGrid();
+            });
         }
 
         private void DrawGrid()
