@@ -24,11 +24,20 @@ namespace SnakeGame
             { GridValue.Food, Images.Food }
         };
 
+        private readonly Dictionary<DirectionGrid, int> dirToRotation = new()
+        {
+            { DirectionGrid.Up, 0 },
+            { DirectionGrid.Right, 90 },
+            { DirectionGrid.Down, 180 },
+            { DirectionGrid.Left, 270 }
+        };
+
         private readonly int rows = 15, cols = 15;
         private readonly Image[,] gridImages;
         private GameState gameState;
         private readonly object directionLock = new();
         private bool gameRunning;
+        private ImageSource source;
 
         public MainWindow()
         {
@@ -117,7 +126,8 @@ namespace SnakeGame
                 {
                     Image image = new()
                     {
-                        Source = Images.Empty
+                        Source = Images.Empty,
+                        RenderTransformOrigin = new Point(0.5, 0.5)
                     };
 
                     images[r, c] = image;
@@ -134,6 +144,7 @@ namespace SnakeGame
             {
                 DrawGrid();
             });
+            DrawSnakeHead();
             ScoreText.Text = $"SCORE {gameState.Score}";
         }
 
@@ -145,7 +156,31 @@ namespace SnakeGame
                 {
                     GridValue gridVal = gameState.Grid[r, c];
                     gridImages[r, c].Source = gridValToImage[gridVal];
+                    gridImages[r, c].RenderTransform = Transform.Identity;
                 }
+            }
+        }
+
+        private void DrawSnakeHead()
+        {
+            PositionGrid headPos = gameState.HeadPosition();
+            Image image = gridImages[headPos.Row, headPos.Col];
+            image.Source = Images.Head;
+
+            int rotation = dirToRotation[gameState.Dir];
+            image.RenderTransform = new RotateTransform(rotation);
+        }
+
+        private async Task DrawDeadSnake()
+        {
+            List<PositionGrid> positionsGrid = new List<PositionGrid>(gameState.SnakePositions());
+
+            for(int i = 0; i < positionsGrid.Count; i++)
+            {
+                PositionGrid pos = positionsGrid[i];
+                ImageSource source = (i == 0) ? Images.SnakeHeadDead : Images.SnakeBodyDead;
+                gridImages[pos.Row, pos.Col].Source = source;
+                await Task.Delay(50);
             }
         }
 
@@ -160,6 +195,7 @@ namespace SnakeGame
 
         private async Task ShowGameOver()
         {
+            await DrawDeadSnake();
             await Task.Delay(500);
             Overlay.Visibility = Visibility.Visible;
             OverlayText.Text = "Press any key to play again";
